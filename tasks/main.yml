@@ -1,0 +1,6 @@
+- name: tailscale | Ubuntu
+  include_tasks: os.ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+- name: tailscale | RedOS
+  include_tasks: os.redos.yml
+  when: ansible_distribution == 'RED'

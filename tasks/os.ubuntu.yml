@@ -1,0 +1,20 @@
+- name: tailscale | get GPG-key
+  ansible.builtin.apt_key:
+    id: "{{ tailscale_gpg }}"
+    url: https://pkgs.tailscale.com/stable/{{ ansible_facts['lsb']['id'] | lower }}/{{ ansible_facts['lsb']['codename'] }}.noarmor.gpg
+    state: present
+- name: tailscale | setup repostiory
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb https://pkgs.tailscale.com/stable/{{ ansible_facts['lsb']['id'] | lower }} {{ ansible_facts['lsb']['codename'] }} main"
+    state: present
+- name: tailscale | install
+  become: true
+  ansible.builtin.apt:
+    name: tailscale
+    state: present
+- name: tailscale | auto-start
+  ansible.builtin.service:
+    name: tailscaled
+    state: started
+    enabled: true
